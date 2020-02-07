@@ -9,8 +9,6 @@ class Transfer
     @receiver = receiver
     @amount = amount
     @status = "pending"
-    
-    @trans_instance = [sender, receiver, amount]
   end
   
   def valid?
@@ -26,7 +24,6 @@ class Transfer
       self.sender.balance - amount
       self.receiver.deposit(amount)
       self.status = "complete"
-      @@all << @trans_instance
     elsif self.status == "complete"
       "This transaction has already been completed."
     else
@@ -36,7 +33,10 @@ class Transfer
   end
   
   def reverse_transfer
-    @@all.find {|a_transfer| a_transfer == @trans_instance}
-
-  
+    if self.status == "complete"
+      self.receiver.balance - amount
+      self.sender.deposit(amount)
+      self.status = "reversed"
+    end
+  end
 end
