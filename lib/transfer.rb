@@ -11,7 +11,6 @@ class Transfer
     @status = "pending"
     
     @trans_instance = [sender, receiver, amount]
-    @@all << @trans_instance
   end
   
   def valid?
@@ -27,15 +26,16 @@ class Transfer
       self.sender.balance - amount
       self.receiver.deposit(amount)
       self.status = "complete"
+      @@all << @trans_instance
     elsif self.status == "complete"
       "This transaction has already been completed."
-    
     else
       self.status = "rejected"
       "Transaction rejected. Please check your account balance."
     end
-    
   end
-
+  
+  def reverse_transfer
+    if @@all.includes @trans_instance
   
 end
