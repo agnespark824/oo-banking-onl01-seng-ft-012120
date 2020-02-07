@@ -36,6 +36,7 @@ class Transfer
   end
   
   def reverse_transfer
-    if @@all.includes @trans_instance
+    @@all.find {|a_transfer| a_transfer == @trans_instance}
+
   
 end
